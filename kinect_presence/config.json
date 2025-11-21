@@ -1,5 +1,5 @@
 {
-  "name": "Kinect v2 MQTT Bridge",
+  "name": "kinect_presence",
   "version": "1.0.0",
   "slug": "kinect_presence",
   "description": "Pubblica gli stati di presenza, distanza e conteggio del Kinect v2 su MQTT, gestendo soglie dinamiche.",
@@ -27,3 +27,4 @@
   }
 
 }
+
