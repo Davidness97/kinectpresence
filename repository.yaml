@@ -1,0 +1,17 @@
+{
+  "name": "kinectpresence",
+  "url": "https://github.com/Davidness97/kinectpresence",
+  "maintainer": "Davidness97",
+  "addons": [
+    {
+      "name": "kinectpresence",
+      "version": "1.0.0",
+      "slug": "kinectpresence",
+      "description": "Pubblica gli stati di presenza, distanza e conteggio del Kinect v2 su MQTT.",
+      "url": "https://github.com/Davidness97/kinectpresence",
+      "arch": ["amd64", "armhf", "aarch64"],
+      "startup": "services",
+      "boot": "auto"
+    }
+  ]
+}
