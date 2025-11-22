@@ -3,4 +3,4 @@ build_from:
   armhf: "ghcr.io/home-assistant/armhf-base:latest"
   aarch64: "ghcr.io/home-assistant/aarch64-base:latest"
 
-dockerfile: root/Dockerfile
+dockerfile: Dockerfile
