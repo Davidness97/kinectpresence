@@ -33,7 +33,12 @@ RUN git clone https://github.com/r9y9/pylibfreenect2.git /tmp/pylibfreenect2 && 
     cd / && \
     rm -rf /tmp/pylibfreenect2
 
-# CONFIGURAZIONE AVVIO DIRETTO (NON TRAMITE SERVIZIO S6)
-# Rimuove tutti gli step S6 precedenti e usa l'istruzione CMD standard.
-# Questa istruzione viene intercettata da s6-overlay e gestita correttamente.
-CMD [ "/usr/bin/python3", "/app/kinect_mqtt_bridge.py" ]
+# NUOVA CONFIGURAZIONE AVVIO CON SCRIPT DI DEBUG
+# Usiamo uno script shell per forzare l'output degli errori prima che S6 faccia il restart.
+
+# [Nuovo Step 9] Crea e rende eseguibile lo script di avvio
+RUN printf '#!/usr/bin/env bash\n\nset -e\n\n# Esegue lo script Python e lo mantiene come PID 1\nexec /usr/bin/python3 /app/kinect_mqtt_bridge.py\n' > /run.sh
+RUN chmod +x /run.sh
+
+# [Step 10] L'istruzione CMD esegue lo script di avvio.
+CMD [ "/run.sh" ]
