@@ -9,7 +9,7 @@
       "slug": "kinectpresence",
       "description": "Pubblica gli stati di presenza, distanza e conteggio del Kinect v2 su MQTT.",
       "url": "https://github.com/Davidness97/kinectpresence",
-      "arch": ["amd64", "armhf", "aarch64"],
+      "arch": ["amd64"],
       "startup": "services",
       "boot": "auto"
     }
