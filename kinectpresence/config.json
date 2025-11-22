@@ -6,9 +6,7 @@
   "arch": ["amd64", "armhf", "aarch64"],
   "startup": "services",
   "boot": "auto",
-  "host_network": true,             
-  "privileged": true,               
-  "devices": [],                    
+  "host_network": true,                            
   "options": {
     "mqtt_broker": "core-mqtt",
     "mqtt_user": "",
@@ -26,6 +24,7 @@
     "umidita_profondita_mm": "int"
   }
 }
+
 
 
 
