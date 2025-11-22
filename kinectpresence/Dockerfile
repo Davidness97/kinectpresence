@@ -26,10 +26,10 @@ RUN pip3 install \
     --no-cache-dir \
     --break-system-packages \
     numpy \
-    cython \              # <-- AGGIUNGI QUESTO
-    setuptools            # <-- AGGIUNGI QUESTO (per setuptools/build_meta.py)
+    cython \
+    setuptools
 
-# 2. Installazione delle dipendenze principali (Ora NumPy, Cython e setuptools sono disponibili)
+# 2. Installazione delle dipendenze principali (Ora l'ambiente di build è pronto)
 RUN pip3 install \
     --no-cache-dir \
     --break-system-packages \
@@ -43,6 +43,7 @@ RUN chmod a+x /usr/bin/run.sh
 
 # 4. ENTRYPOINT: L'esecuzione parte da qui
 CMD [ "/usr/bin/run.sh" ]
+
 
 
 
