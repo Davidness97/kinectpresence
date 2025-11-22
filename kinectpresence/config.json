@@ -6,7 +6,7 @@
   "arch": ["amd64", "armhf", "aarch64"],
   "init": false,
   "uart": false,
-  "startup": "services",
+  "startup": "application",
   "boot": "auto",
   "host_network": true,
   "ports": {},
