@@ -33,18 +33,7 @@ RUN git clone https://github.com/r9y9/pylibfreenect2.git /tmp/pylibfreenect2 && 
     cd / && \
     rm -rf /tmp/pylibfreenect2
 
-# NUOVI STEP FONDAMENTALI PER S6-OVERLAY (Home Assistant Add-on)
-# Definisce il tuo script Python come un servizio gestito da S6.
-
-# 1. Crea la directory per il servizio S6 (lo chiamo 'kinect-service')
-RUN mkdir -p /etc/s6-overlay/s6-rc.d/kinect-service
-# 2. Crea lo script 'run' eseguibile usando 'exec' (necessario per S6)
-RUN printf '#!/usr/bin/env bash\n\nexec python3 /app/kinect_mqtt_bridge.py\n' > /etc/s6-overlay/s6-rc.d/kinect-service/run
-# 3. Rende lo script eseguibile
-RUN chmod +x /etc/s6-overlay/s6-rc.d/kinect-service/run
-
-# 4. Crea la directory contents.d che la base image non crea automaticamente
-RUN mkdir -p /etc/s6-overlay/s6-rc.d/default/contents.d
-
-# 5. Aggiunge il servizio al bundle 'default' per l'avvio automatico
-RUN printf 'kinect-service\n' > /etc/s6-overlay/s6-rc.d/default/contents.d/kinect-service
+# CONFIGURAZIONE AVVIO DIRETTO (NON TRAMITE SERVIZIO S6)
+# Rimuove tutti gli step S6 precedenti e usa l'istruzione CMD standard.
+# Questa istruzione viene intercettata da s6-overlay e gestita correttamente.
+CMD [ "/usr/bin/python3", "/app/kinect_mqtt_bridge.py" ]
