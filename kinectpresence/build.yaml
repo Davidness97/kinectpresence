@@ -6,4 +6,4 @@ build_from:
 dockerfile: Dockerfile
 
 args:
-  BUILD_FROM: ${build_from}
+  BUILD_FROM: $build_from
