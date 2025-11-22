@@ -1,7 +1,7 @@
 {
-  "name": "Kinect Presence",
+  "name": "kinectpresence",
   "version": "1.0.0",
-  "slug": "kinect_presence",
+  "slug": "kinectpresence",
   "description": "Pubblica gli stati di presenza, distanza e conteggio del Kinect v2 su MQTT, gestendo soglie dinamiche.",
   "arch": ["amd64", "armhf", "aarch64"],
   "startup": "services",
@@ -26,5 +26,6 @@
     "umidita_profondita_mm": "int"
   }
 }
+
 
 
