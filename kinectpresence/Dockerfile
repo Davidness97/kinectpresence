@@ -5,17 +5,18 @@ FROM ghcr.io/home-assistant/amd64-base:latest
 RUN echo "Cache invalidation $(date +%s)"
 
 # [Step 2/10] Installa le dipendenze di build e di sistema
-# CORREZIONE FINALE: Lista di pacchetti che esistono in Alpine (rimossi i pacchetti X11 errati).
+# Lista di pacchetti che esistono in Alpine.
 RUN apk update && \
     apk add --no-cache build-base cmake libusb-dev mesa-dev pkgconfig python3-dev py3-pip jq git libjpeg-turbo-dev libx11-dev && \
     rm -rf /var/cache/apk/*
 
 # [Step 3/10] Clona, compila e installa libfreenect2
-# Questo crea la libreria C++ in /usr/local/
+# MODIFICA CRITICA: Forza l'uso del backend CPU per evitare dipendenze OpenGL/GPU non gestibili.
 RUN git clone https://github.com/OpenKinect/libfreenect2.git /tmp/libfreenect2 && \
     mkdir -p /tmp/libfreenect2/build && \
     cd /tmp/libfreenect2/build && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && \
+    # Compila con i parametri di default e forza l'installazione in /usr/local
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release -DFREENECT2_BUILD_WITH_CPU=ON -DFREENECT2_WITH_OPENGL=OFF -DFREENECT2_WITH_OPENCL=OFF && \
     make -j$(nproc) && \
     make install && \
     cd / && \
@@ -43,10 +44,9 @@ RUN git clone https://github.com/r9y9/pylibfreenect2.git /tmp/pylibfreenect2 && 
 
 # CONFIGURAZIONE AVVIO CON SCRIPT CRITICA: VARIABILI DI PERCORSO PER IL RUNTIME
 # [Step 8/10] Crea e rende eseguibile lo script di avvio. 
-# CRITICO: Usa LD_LIBRARY_PATH e PYTHONPATH per il RUNTIME.
+# Rimossa LD_DEBUG perché non ha fornito diagnostica.
 RUN printf '#!/usr/bin/env bash\n\nset -e\n\n# Messaggio diagnostico di avvio\necho "Inizializzazione script di avvio del container..." 2>&1\n/usr/bin/python3 --version 2>&1\n\n# Aggiunge il percorso della libreria C++ (libfreenect2) per il runtime Python\nexport LD_LIBRARY_PATH="/usr/local/lib":$LD_LIBRARY_PATH\n\n# Aggiunge il percorso di installazione Python\nexport PYTHONPATH="/usr/local/lib/python3.11/site-packages":$PYTHONPATH\n\n# Esegue lo script Python, reindirizzando stderr (errori) a stdout (log)\nexec /usr/bin/python3 /app/kinect_mqtt_bridge.py 2>&1\n' > /run.sh
 RUN chmod +x /run.sh
 
 # [Step 9/10] L'istruzione CMD esegue lo script di avvio.
 CMD [ "/run.sh" ]
-
