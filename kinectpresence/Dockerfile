@@ -33,7 +33,7 @@ RUN pip3 install \
 RUN pip3 install \
     --no-cache-dir \
     --break-system-packages \
-    --no-build-isolation \  # <--- AGGIUNGI QUESTO FLAG CRITICO
+    --no-build-isolation \
     paho-mqtt \
     pylibfreenect2
 
@@ -44,6 +44,7 @@ RUN chmod a+x /usr/bin/run.sh
 
 # 4. ENTRYPOINT: L'esecuzione parte da qui
 CMD [ "/usr/bin/run.sh" ]
+
 
 
 
