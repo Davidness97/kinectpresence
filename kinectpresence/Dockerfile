@@ -4,7 +4,7 @@ FROM $BUILD_FROM
 # 1. Installazione delle dipendenze di sistema (necessarie per la compilazione e runtime)
 RUN apk update \
     && apk add --no-cache \
-        # Dipendenze per LibFreenect2 e Python
+        # ... (Le tue dipendenze esistenti)
         build-base \
         cmake \
         libusb-dev \
@@ -12,6 +12,9 @@ RUN apk update \
         pkgconfig \
         python3-dev \
         py3-pip \
+        # Dipendenze mancanti per la compilazione di Libfreenect2
+        libjpeg-turbo-dev \  # <--- AGGIUNGI QUESTO
+        libx11-dev \         # <--- AGGIUNGI QUESTO
         # Tool di basso livello per USB e file
         jq \
         git \
@@ -56,6 +59,7 @@ RUN chmod a+x /usr/bin/run.sh
 
 # 4. ENTRYPOINT: L'esecuzione parte da qui
 CMD [ "/usr/bin/run.sh" ]
+
 
 
 
