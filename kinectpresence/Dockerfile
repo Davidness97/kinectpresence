@@ -16,9 +16,9 @@ RUN git clone https://github.com/OpenKinect/libfreenect2.git /tmp/libfreenect2 &
     cd / && \
     rm -rf /tmp/libfreenect2
 
-# [NUOVO STEP 4/11] Aggiunge il percorso della libreria C++ e aggiorna la cache.
-# Questo è il tentativo finale per risolvere il problema di linking.
-RUN echo "/usr/local/lib" >> /etc/ld-musl-x86_64.path && ldconfig
+# [NUOVO STEP 4/11] Aggiunge il percorso della libreria C++ tramite file di configurazione e aggiorna la cache.
+# Questo è il metodo standard e robusto per Alpine Linux.
+RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/libfreenect2.conf && ldconfig
 
 WORKDIR /app
 
@@ -38,7 +38,7 @@ RUN git clone https://github.com/r9y9/pylibfreenect2.git /tmp/pylibfreenect2 && 
     rm -rf /tmp/pylibfreenect2
 
 # CONFIGURAZIONE AVVIO CON SCRIPT CORRETTO
-# Non è più necessario l'export LD_LIBRARY_PATH grazie a ldconfig, ma lo manteniamo per sicurezza.
+# Manteniamo l'export LD_LIBRARY_PATH nello script di avvio per massima sicurezza.
 
 # [Step 9/11] Crea e rende eseguibile lo script di avvio
 RUN printf '#!/usr/bin/env bash\n\nset -e\n\n# Aggiunge il percorso della libreria C++ (libfreenect2) per il runtime Python\nexport LD_LIBRARY_PATH="/usr/local/lib":$LD_LIBRARY_PATH\n\n# Esegue lo script Python e lo mantiene come PID 1\nexec /usr/bin/python3 /app/kinect_mqtt_bridge.py\n' > /run.sh
