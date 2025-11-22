@@ -1,0 +1,6 @@
+---
+# Questo file è richiesto da alcune versioni di Hass.io come fallback
+# Definisce il nome dell'immagine da costruire
+build:
+  args: {}
+  dockerfile: Dockerfile
