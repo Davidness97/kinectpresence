@@ -24,7 +24,7 @@ COPY kinect_mqtt_bridge.py /app/
 # [Step 7/10] Installa le dipendenze di base per la compilazione Python
 RUN pip3 install --no-cache-dir --break-system-packages numpy cython setuptools paho-mqtt
 
-# [Step 8/10 - CORRETTO] Installa pylibfreenect2 dalla sorgente per trovare i file Cython .pxd
+# [Step 8/10] Installa pylibfreenect2 dalla sorgente (richiede il percorso corretto solo per il build)
 RUN git clone https://github.com/r9y9/pylibfreenect2.git /tmp/pylibfreenect2 && \
     cd /tmp/pylibfreenect2 && \
     PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
@@ -33,11 +33,11 @@ RUN git clone https://github.com/r9y9/pylibfreenect2.git /tmp/pylibfreenect2 && 
     cd / && \
     rm -rf /tmp/pylibfreenect2
 
-# NUOVA CONFIGURAZIONE AVVIO CON SCRIPT DI DEBUG
-# Usiamo uno script shell per forzare l'output degli errori prima che S6 faccia il restart.
+# CONFIGURAZIONE AVVIO CON SCRIPT CORRETTO
+# Aggiunto export di LD_LIBRARY_PATH per il runtime.
 
 # [Nuovo Step 9] Crea e rende eseguibile lo script di avvio
-RUN printf '#!/usr/bin/env bash\n\nset -e\n\n# Esegue lo script Python e lo mantiene come PID 1\nexec /usr/bin/python3 /app/kinect_mqtt_bridge.py\n' > /run.sh
+RUN printf '#!/usr/bin/env bash\n\nset -e\n\n# Aggiunge il percorso della libreria C++ (libfreenect2) per il runtime Python\nexport LD_LIBRARY_PATH="/usr/local/lib":$LD_LIBRARY_PATH\n\n# Esegue lo script Python e lo mantiene come PID 1\nexec /usr/bin/python3 /app/kinect_mqtt_bridge.py\n' > /run.sh
 RUN chmod +x /run.sh
 
 # [Step 10] L'istruzione CMD esegue lo script di avvio.
