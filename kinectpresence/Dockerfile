@@ -22,7 +22,9 @@ WORKDIR /app
 WORKDIR /app
 COPY kinect_mqtt_bridge.py /app/
 
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+RUN PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" 
+
+LD_LIBRARY_PATH="/usr/local/lib"
 
 # 1. Installazione di NumPy e dipendenze di build (per risolvere il ModuleNotFoundError)
 RUN pip3 install \
@@ -47,6 +49,7 @@ RUN chmod a+x /usr/bin/run.sh
 
 # 4. ENTRYPOINT: L'esecuzione parte da qui
 CMD [ "/usr/bin/run.sh" ]
+
 
 
 
