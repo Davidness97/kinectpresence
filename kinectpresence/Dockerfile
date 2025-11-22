@@ -2,20 +2,20 @@ ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:latest
 FROM $BUILD_FROM
 
 # 1. Installazione delle dipendenze di sistema (necessarie per la compilazione e runtime)
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+RUN apk update \
+    && apk add --no-cache \
         # Dipendenze per LibFreenect2 e Python
-        build-essential \
+        build-base \
         cmake \
-        libusb-1.0-0-dev \
-        libgl-dev \
-        pkg-config \
+        libusb-dev \
+        mesa-dev \
+        pkgconfig \
         python3-dev \
-        python3-pip \
+        py3-pip \
         # Tool di basso livello per USB e file
         jq \
         git \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/cache/apk/*
 
 # 2. Definizione dell'ambiente Python e installazione di Mqtt
 WORKDIR /app
@@ -34,5 +34,6 @@ RUN chmod a+x /usr/bin/run.sh
 
 # 4. ENTRYPOINT: L'esecuzione parte da qui
 CMD [ "/usr/bin/run.sh" ]
+
 
 
