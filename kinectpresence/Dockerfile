@@ -1,4 +1,4 @@
-ARG BUILD_FROM
+ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:latest 
 FROM $BUILD_FROM
 
 # 1. Installazione delle dipendenze di sistema (necessarie per la compilazione e runtime)
@@ -34,4 +34,5 @@ RUN chmod a+x /usr/bin/run.sh
 
 # 4. ENTRYPOINT: L'esecuzione parte da qui
 CMD [ "/usr/bin/run.sh" ]
+
 
